@@ -1,0 +1,7 @@
+{% extends 'clinic/base.html' %}
+{% block title %}Consultation · MediDesk{% endblock %}
+{% block content %}<div class="heading"><div><a class="back" href="{% url 'consultation_list' %}">← Consultations</a><h1>{{ item.appointment.patient.full_name }}</h1><p>Clinician: {{ item.clinician }} · {{ item.created_at|date:'M d, Y · H:i' }}</p></div><span class="pill">{{ item.get_status_display }}</span></div>
+<div class="two"><div class="panel"><h2>Visit note</h2><h3>Symptoms</h3><p class="prose">{{ item.symptoms|linebreaksbr }}</p><h3>Assessment</h3><p class="prose">{{ item.assessment|default:'Not recorded'|linebreaksbr }}</p><h3>Plan</h3><p class="prose">{{ item.plan|default:'Not recorded'|linebreaksbr }}</p></div>
+<div class="panel"><h2>Vital signs</h2><div class="facts"><span>Blood pressure</span><b>{{ item.systolic|default_if_none:'—' }} / {{ item.diastolic|default_if_none:'—' }}</b><span>Pulse</span><b>{{ item.pulse|default_if_none:'—' }}</b><span>Temperature °C</span><b>{{ item.temperature_c|default_if_none:'—' }}</b><span>SpO2 %</span><b>{{ item.oxygen_saturation|default_if_none:'—' }}</b></div></div></div>
+{% if item.status == 'draft' %}<div class="actions"><a class="button ghost" href="{% url 'consultation_edit' item.pk %}">Edit draft</a><form method="post" action="{% url 'consultation_sign' item.pk %}">{% csrf_token %}<button class="button" type="submit">Sign and lock note</button></form></div>{% else %}<p class="muted">Signed at {{ item.signed_at|date:'M d, Y · H:i' }}. Editing is disabled.</p>{% endif %}
+{% endblock %}

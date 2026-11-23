@@ -1,0 +1,8 @@
+{% extends 'clinic/base.html' %}
+{% block title %}Billing dashboard · MediDesk{% endblock %}
+{% block content %}
+<div class="heading"><div><span class="eyebrow">DEMO BILLING</span><h1>Clinic billing</h1><p>Service charges and manually recorded payments. No real transactions.</p></div><a class="button" href="{% url 'billing_invoice_create' %}">New invoice</a></div>
+<div class="stats"><div class="stat"><span>Invoices</span><strong>{{ invoice_count }}</strong></div><div class="stat"><span>Active services</span><strong>{{ service_count }}</strong></div><div class="stat"><span>Unpaid in latest 100</span><strong>{{ unpaid_count }}</strong></div><div class="stat"><span>Outstanding · latest 100</span><strong>{{ outstanding_preview|floatformat:2 }}</strong></div></div>
+<div class="panel"><div class="section-heading"><h2>Recent invoices</h2><div class="actions"><a href="{% url 'billing_services' %}">Services</a><a href="{% url 'billing_invoices' %}">All invoices</a><a href="{% url 'billing_export' %}">Export CSV</a></div></div>
+<div class="table-wrap"><table><thead><tr><th>Invoice</th><th>Patient</th><th>Total</th><th>Balance</th><th>Status</th></tr></thead><tbody>{% for item in invoices %}<tr><td><a href="{% url 'billing_invoice_detail' item.pk %}">{{ item.reference }}</a></td><td>{{ item.patient.full_name }}</td><td>{{ item.total|floatformat:2 }}</td><td>{{ item.balance|floatformat:2 }}</td><td><span class="pill">{{ item.payment_status }}</span></td></tr>{% empty %}<tr><td colspan="5" class="muted">No invoices yet.</td></tr>{% endfor %}</tbody></table></div></div>
+{% endblock %}

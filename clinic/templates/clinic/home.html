@@ -1,0 +1,8 @@
+{% extends 'clinic/base.html' %}
+{% block title %}MediDesk · Clinic Management{% endblock %}
+{% block content %}
+<section class="hero"><div><span class="eyebrow">CLINIC WORKSPACE · PORTFOLIO DEMO</span><h1>Thoughtful tools for a smoother clinic day.</h1><p>Manage fictional patient profiles, appointments, and clinician consultation notes in one clean workspace.</p>
+<a class="button" href="{% url 'dashboard' %}">Open dashboard ↗</a></div>
+<div class="hero-art"><div class="pulse">✚</div><div class="glass">PATIENTS <b>·</b> APPOINTMENTS <b>·</b> VISITS</div><span>Simple workflows. Clear records.</span></div></section>
+<div class="three"><div class="feature"><span>01</span><h3>Patient records</h3><p>Organized contact information and linked visit history.</p></div><div class="feature"><span>02</span><h3>Appointment planning</h3><p>Schedule visits and prevent clinician double bookings.</p></div><div class="feature"><span>03</span><h3>Consultation drafts</h3><p>Clinician-only notes with sign-off and protected access.</p></div></div>
+{% endblock %}

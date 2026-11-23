@@ -1,0 +1,7 @@
+{% extends 'clinic/base.html' %}
+{% block title %}{{ title }} · MediDesk{% endblock %}
+{% block content %}<div class="heading"><div><span class="eyebrow">MEDIDESK WORKSPACE</span><h1>{{ title }}</h1><p>Fields marked * are required. Use fictional information only.</p></div></div>
+<div class="panel narrow"><form method="post">{% csrf_token %}{{ form.non_field_errors }}
+{% for field in form %}<div class="form-row"><label for="{{ field.id_for_label }}">{{ field.label }}{% if field.field.required %} *{% endif %}</label>{{ field }}{% if field.help_text %}<small>{{ field.help_text }}</small>{% endif %}{% for error in field.errors %}<div class="error">{{ error }}</div>{% endfor %}</div>{% endfor %}
+<div class="actions"><button class="button" type="submit">Save record</button><a class="button ghost" href="{% url cancel_url %}">Cancel</a></div></form></div>
+{% endblock %}

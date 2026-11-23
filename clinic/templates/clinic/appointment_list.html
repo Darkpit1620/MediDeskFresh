@@ -1,0 +1,5 @@
+{% extends 'clinic/base.html' %}
+{% block title %}Appointments · MediDesk{% endblock %}
+{% block content %}<div class="heading"><div><span class="eyebrow">VISIT SCHEDULE</span><h1>Appointments</h1><p>View upcoming and previous visits.</p></div><a class="button" href="{% url 'appointment_create' %}">+ New appointment</a></div>
+<div class="panel"><div class="table-wrap"><table><thead><tr><th>Patient</th><th>Scheduled</th><th>Clinician</th><th>Status</th><th></th></tr></thead><tbody>
+{% for a in records %}<tr><td>{{ a.patient.full_name }}</td><td>{{ a.scheduled_for|date:'M d, Y · H:i' }}</td><td>{{ a.clinician|default:'Unassigned' }}</td><td><span class="pill">{{ a.get_status_display }}</span></td><td><a href="{% url 'appointment_detail' a.pk %}">View →</a></td></tr>{% empty %}<tr><td colspan="5" class="muted">No appointments found.</td></tr>{% endfor %}</tbody></table></div></div>{% endblock %}

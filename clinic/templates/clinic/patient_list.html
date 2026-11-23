@@ -1,0 +1,7 @@
+{% extends 'clinic/base.html' %}
+{% block title %}Patients · MediDesk{% endblock %}
+{% block content %}
+<div class="heading"><div><span class="eyebrow">PATIENT DIRECTORY</span><h1>Patients</h1><p>Search demo patient records and open their appointment history.</p></div><a class="button" href="{% url 'patient_create' %}">+ Add patient</a></div>
+<div class="panel"><form class="search" method="get"><input name="q" value="{{ q }}" placeholder="Search name, email, or phone"><button type="submit" class="button">Search</button></form>
+<div class="table-wrap"><table><thead><tr><th>Name</th><th>Date of birth</th><th>Phone</th><th>Profile</th></tr></thead><tbody>{% for item in records %}<tr><td><strong>{{ item.full_name }}</strong></td><td>{{ item.date_of_birth|date:'M d, Y' }}</td><td>{{ item.phone|default:'—' }}</td><td><a href="{% url 'patient_detail' item.pk %}">View →</a></td></tr>{% empty %}<tr><td colspan="4" class="muted">No records found.</td></tr>{% endfor %}</tbody></table></div></div>
+{% endblock %}

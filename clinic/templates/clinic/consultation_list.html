@@ -1,0 +1,5 @@
+{% extends 'clinic/base.html' %}
+{% block title %}Consultations · MediDesk{% endblock %}
+{% block content %}<div class="heading"><div><span class="eyebrow">CLINICIAN WORKSPACE</span><h1>Consultations</h1><p>Clinicians can access only their assigned notes.</p></div><a class="button" href="{% url 'consultation_create' %}">+ New consultation</a></div>
+<div class="panel"><div class="table-wrap"><table><thead><tr><th>Patient</th><th>Clinician</th><th>Date</th><th>Status</th><th></th></tr></thead><tbody>
+{% for c in records %}<tr><td>{{ c.appointment.patient.full_name }}</td><td>{{ c.clinician }}</td><td>{{ c.created_at|date:'M d, Y' }}</td><td><span class="pill">{{ c.get_status_display }}</span></td><td><a href="{% url 'consultation_detail' c.pk %}">View →</a></td></tr>{% empty %}<tr><td colspan="5" class="muted">No consultation records yet.</td></tr>{% endfor %}</tbody></table></div></div>{% endblock %}

@@ -1,0 +1,6 @@
+{% extends 'clinic/base.html' %}
+{% block title %}Clinic services · MediDesk{% endblock %}
+{% block content %}
+<div class="heading"><div><a class="back" href="{% url 'billing_home' %}">← Billing</a><h1>Clinic services</h1><p>Changing prices will not change old invoice lines.</p></div><a class="button" href="{% url 'billing_service_create' %}">Add service</a></div>
+<div class="panel table-wrap"><table><thead><tr><th>Code</th><th>Service</th><th>Price</th><th>Status</th><th>Action</th></tr></thead><tbody>{% for item in items %}<tr><td>{{ item.code }}</td><td>{{ item.name }}</td><td>{{ item.price|floatformat:2 }}</td><td>{{ item.active|yesno:'Active,Inactive' }}</td><td><a href="{% url 'billing_service_edit' item.pk %}">Edit</a></td></tr>{% empty %}<tr><td colspan="5">No services yet. Add your first service.</td></tr>{% endfor %}</tbody></table></div>
+{% endblock %}

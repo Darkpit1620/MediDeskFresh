@@ -1,0 +1,4 @@
+{% extends 'clinic/base.html' %}
+{% block title %}Patient · MediDesk{% endblock %}
+{% block content %}<div class="heading"><div><a class="back" href="{% url 'patient_list' %}">← All patients</a><h1>{{ patient.full_name }}</h1><p>Date of birth: {{ patient.date_of_birth|date:'M d, Y' }}</p></div><a class="button" href="{% url 'patient_edit' patient.pk %}">Edit profile</a></div>
+<div class="two"><div class="panel"><h2>Contact</h2><div class="facts"><span>Phone</span><b>{{ patient.phone|default:'Not provided' }}</b><span>Email</span><b>{{ patient.email|default:'Not provided' }}</b></div></div><div class="panel"><h2>Visit history</h2>{% for a in appointments %}<div class="line"><a href="{% url 'appointment_detail' a.pk %}">{{ a.scheduled_for|date:'M d, Y · H:i' }}</a><span>{{ a.get_status_display }}</span></div>{% empty %}<p class="muted">No appointments yet.</p>{% endfor %}</div></div>{% endblock %}

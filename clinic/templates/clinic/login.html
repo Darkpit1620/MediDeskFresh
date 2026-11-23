@@ -1,0 +1,7 @@
+{% extends 'clinic/base.html' %}
+{% block title %}Staff login · MediDesk{% endblock %}
+{% block content %}<section class="auth-card"><span class="eyebrow">STAFF ACCESS</span><h1>Welcome back</h1><p>Use your staff credentials to enter the demonstration workspace.</p>
+<form method="post">{% csrf_token %}{{ form.non_field_errors }}
+<label for="id_username">Username</label>{{ form.username }}
+<label for="id_password">Password</label>{{ form.password }}
+<input type="hidden" name="next" value="{{ next }}"><button type="submit" class="button full">Sign in</button></form></section>{% endblock %}

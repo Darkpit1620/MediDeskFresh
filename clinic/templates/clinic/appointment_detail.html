@@ -1,0 +1,5 @@
+{% extends 'clinic/base.html' %}
+{% block title %}Appointment · MediDesk{% endblock %}
+{% block content %}<div class="heading"><div><a class="back" href="{% url 'appointment_list' %}">← All appointments</a><h1>{{ item.patient.full_name }}</h1><p>{{ item.scheduled_for|date:'M d, Y · H:i' }}</p></div></div>
+<div class="panel narrow"><h2>Visit details</h2><div class="facts"><span>Clinician</span><b>{{ item.clinician|default:'Unassigned' }}</b><span>Status</span><b>{{ item.get_status_display }}</b><span>Reason</span><b>{{ item.reason }}</b></div>
+{% if consultation %}<a class="button" href="{% url 'consultation_detail' consultation.pk %}">Open consultation</a>{% else %}<a class="button" href="{% url 'consultation_create' %}">Create consultation</a>{% endif %}</div>{% endblock %}

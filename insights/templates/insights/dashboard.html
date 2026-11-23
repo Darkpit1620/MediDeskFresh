@@ -1,0 +1,59 @@
+{% extends 'clinic/base.html' %}
+{% load static %}
+{% block title %}Reports · MediDesk{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'insights/css/reports.css' %}">
+<div class="heading">
+  <div><span class="eyebrow">READ-ONLY ANALYTICS</span><h1>Clinic reports</h1>
+    <p>Monthly totals and trends for fictional records. Financial data is visible only to Billing staff.</p></div>
+  <div class="actions">
+    <a class="button ghost" href="{% url 'reports_monthly_csv' %}?month={{ data.month }}">Export monthly CSV</a>
+    <a class="button" href="{% url 'reports_trends_csv' %}?month={{ data.month }}">Export 6-month trends</a>
+  </div>
+</div>
+<div class="panel report-filter">
+  <form method="get" class="report-controls"><label for="month"><strong>Reporting month</strong></label>
+  <input id="month" type="month" name="month" value="{{ data.month }}" min="2000-01" max="2100-12" required>
+  <button class="button small" type="submit">Apply filter</button></form>
+  {% if invalid_month %}<p class="report-warning" role="alert">The requested month was invalid. Showing the current month.</p>{% endif %}
+  <p class="muted" style="margin-bottom:0">Selected: <strong>{{ data.month_label }}</strong>. This dashboard does not include identifiable patient names.</p>
+</div>
+<div class="stats report-kpis">
+  <div class="stat"><span>Scheduled appointments</span><strong>{{ data.appointments }}</strong></div>
+  <div class="stat"><span>New patient registrations</span><strong>{{ data.new_patients }}</strong></div>
+  <div class="stat"><span>Consultations created</span><strong>{{ data.consultations }}</strong></div>
+  <div class="stat"><span>Invoices issued</span><strong>{{ data.invoice_count }}</strong></div>
+</div>
+<div class="three report-money">
+  <div class="stat"><span>Services invoiced in {{ data.month_label }}</span><strong>{{ data.billed|floatformat:2 }}</strong><small>Totals for invoice issue dates in this month</small></div>
+  <div class="stat"><span>Recorded payments in {{ data.month_label }}</span><strong>{{ data.cash_received|floatformat:2 }}</strong><small>Payment entry dates, regardless of invoice month</small></div>
+  <div class="stat"><span>Outstanding balances right now</span><strong>{{ data.outstanding_now|floatformat:2 }}</strong><small>Across all invoice months, excludes empty drafts</small></div>
+</div>
+<div class="two" style="margin-top:22px">
+  <section class="panel"><h2>Appointment statuses</h2><p>Appointments scheduled during this month</p>
+    {% for label, value in data.appointment_statuses %}<div class="line"><span>{{ label }}</span><strong>{{ value }}</strong></div>{% endfor %}
+  </section>
+  <section class="panel"><h2>Consultation statuses</h2><p>Consultations created during this month</p>
+    {% for label, value in data.consultation_statuses %}<div class="line"><span>{{ label }}</span><strong>{{ value }}</strong></div>{% endfor %}
+  </section>
+</div>
+<div class="two" style="margin-top:22px">
+  <section class="panel"><h2>Payments by method</h2><p>Only payments recorded during this month</p>
+    {% for label, value in data.payment_methods %}<div class="line"><span>{{ label }}</span><strong>{{ value|floatformat:2 }}</strong></div>{% endfor %}
+  </section>
+  <section class="panel"><h2>Invoiced services</h2><p>Top service line descriptions in this month</p>
+    {% for item in data.top_services %}<div class="line"><span>{{ item.description }}</span><strong>{{ item.billed|floatformat:2 }}</strong></div>
+    {% empty %}<p class="muted">No invoiced services in this month.</p>{% endfor %}
+  </section>
+</div>
+<section class="panel" style="margin-top:22px"><h2>Six-month invoiced and payment trend</h2>
+  <p>Billed figures use invoice issue dates. Payment figures use payment recording dates. These values are not interchangeable.</p>
+  <div class="report-legend"><span class="report-dot billed"></span> Invoiced service totals <span class="report-dot cash"></span> Recorded payments</div>
+  <div class="table-wrap"><table><thead><tr><th>Month</th><th>Service totals invoiced</th><th>Payments recorded</th><th>Comparison</th></tr></thead>
+  <tbody>{% for item in trends %}<tr><td>{{ item.month_label }}</td><td>{{ item.billed|floatformat:2 }}</td><td>{{ item.cash_received|floatformat:2 }}</td>
+  <td class="report-bar-cell"><div class="report-track"><span class="report-bar billed" style="width:{{ item.billed_width }}%"></span></div>
+  <div class="report-track"><span class="report-bar cash" style="width:{{ item.cash_width }}%"></span></div></td></tr>{% endfor %}
+  </tbody></table></div>
+</section>
+<p class="muted report-footnote">This is a development portfolio demonstration. No live payments are processed, and reports must not be used for real clinical or accounting decisions.</p>
+{% endblock %}
